@@ -23,18 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterRequest registerRequest) {
-        User createdUser = userService.registerUser(registerRequest);
-        return ResponseEntity.ok(createdUser);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserLoginRequest loginRequest) {
-        User authenticatedUser = userService.authenticateUser(loginRequest);
-        return ResponseEntity.ok(authenticatedUser);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
