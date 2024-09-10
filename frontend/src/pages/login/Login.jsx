@@ -6,8 +6,8 @@ import "./login.css";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: undefined,
-    password: undefined,
+    username: "",
+    password: "",
   });
 
   const { loading, error, dispatch } = useContext(AuthContext);
@@ -22,10 +22,24 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/login", credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      const res = await axios.post(
+        "http://localhost:8800/api/auth/login",
+        credentials
+      );
+
+      // Verifică structura răspunsului
+      console.log("Login response:", res.data);
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          user: res.data.user,
+          token: res.data.token,
+        },
+      });
       navigate("/");
     } catch (err) {
+      console.error("Login error:", err.response.data); // Adaugă loguri pentru erori
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };

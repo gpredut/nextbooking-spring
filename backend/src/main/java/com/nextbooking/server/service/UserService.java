@@ -3,22 +3,19 @@ package com.nextbooking.server.service;
 import com.nextbooking.server.model.User;
 import com.nextbooking.server.model.UserLoginRequest;
 import com.nextbooking.server.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-    }
-
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
@@ -46,7 +43,8 @@ public class UserService {
                         user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                     }
 
-                    user.setRole(updatedUser.getRole());
+                    // Set role to GUEST if null
+                    user.setRole(updatedUser.getRole() != null ? updatedUser.getRole() : User.Role.GUEST);
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));

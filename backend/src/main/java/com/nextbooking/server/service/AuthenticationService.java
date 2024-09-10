@@ -5,54 +5,55 @@ import com.nextbooking.server.model.UserLoginRequest;
 import com.nextbooking.server.model.UserRegisterRequest;
 import com.nextbooking.server.repository.UserRepository;
 import com.nextbooking.server.security.JwtUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationService(UserRepository userRepository, JwtUtil jwtUtil){
-        this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-        this.jwtUtil = jwtUtil;
-    }
+    public User registerUser(UserRegisterRequest registerRequest) {
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+            throw new IllegalStateException("Username already exists: " + registerRequest.getUsername());
+        }
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            throw new IllegalStateException("Email already exists: " + registerRequest.getEmail());
+        }
 
-    public User registerUser(UserRegisterRequest registerRequest){
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(registerRequest.getRole()  != null ? registerRequest.getRole() : User.Role.GUEST );
+
+        user.setRole(registerRequest.getRole() != null ? registerRequest.getRole() : User.Role.GUEST);
 
         return userRepository.save(user);
     }
 
-    public String authenticateUser(UserLoginRequest loginRequest){
-        String usernameOrEmail = loginRequest.getUsernameOrEmail();
+    public Map<String, Object> authenticateUser(UserLoginRequest loginRequest) {
+        String username = loginRequest.getUsername();
 
-        // Try to find user by username
-        Optional <User> userOpt = userRepository.findByUsername(usernameOrEmail);
-        // If not found by username, try to find by email
-        if(!userOpt.isPresent()){
-            userOpt = userRepository.findByEmail(usernameOrEmail);
-        }
-        User user = userOpt.orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("Invalid credentials: " + username));
 
-        // Validate password
-        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
-            throw new RuntimeException("Invalid credentials");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new IllegalStateException("Invalid credentials for user: " + username);
         }
 
-        // Determine which identifier to use for generating the token
-        String identifier = user.getEmail().equals(usernameOrEmail) ? user.getEmail() : user.getUsername();
+        String token = jwtUtil.generateToken(user.getUsername());
 
-        // Generate and return JWT using the chosen identifier
-        return jwtUtil.generateToken(identifier);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", user);
+        response.put("token", token);
+
+        return response;
     }
 }

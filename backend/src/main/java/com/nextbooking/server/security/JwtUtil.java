@@ -3,12 +3,17 @@ package com.nextbooking.server.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
     @Value("${jwt.secret}")
@@ -17,37 +22,40 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    // Generate token with username or email
-    public String generateToken(String identifier){
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String generateToken(String identifier) {
         return Jwts.builder()
                 .setSubject(identifier)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Extract identifier from token (username or email)
-    public String getIdentifierFromToken(String token){
-        return Jwts.parser()
-                .setSigningKey(secretKey)
+    public String getIdentifierFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
+        return claims.getSubject();
     }
 
-    // Check Jwt expiration
-    public boolean isTokenExpired(String token){
-        return Jwts.parser()
-                .setSigningKey(secretKey)
+    public boolean isTokenExpired(String token) {
+        Date expirationDate = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getExpiration()
-                .before(new Date());
+                .getExpiration();
+        return expirationDate.before(new Date());
     }
 
-    // Validate token
-    public boolean validateToken(String token, String identifier){
+    public boolean validateToken(String token, String identifier) {
         final String tokenIdentifier = getIdentifierFromToken(token);
         return (identifier.equals(tokenIdentifier) && !isTokenExpired(token));
     }

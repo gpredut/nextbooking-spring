@@ -1,7 +1,16 @@
 import { createContext, useEffect, useReducer } from "react";
 
 const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: (() => {
+    const storedUser = localStorage.getItem("user");
+    try {
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Error parsing user data from localStorage", error);
+      return null;
+    }
+  })(),
+  token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
 };
@@ -12,25 +21,33 @@ const AuthReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN_START":
       return {
+        ...state,
         user: null,
         loading: true,
         error: null,
       };
     case "LOGIN_SUCCESS":
+      console.log("LOGIN_SUCCESS payload:", action.payload); // Adaugă log aici
       return {
-        user: action.payload,
+        ...state,
+        user: action.payload.user, // Salvăm user-ul din payload
+        token: action.payload.token, // Salvăm token-ul JWT
         loading: false,
         error: null,
       };
     case "LOGIN_FAILURE":
       return {
+        ...state,
         user: null,
+        token: null,
         loading: false,
         error: action.payload,
       };
     case "LOGOUT":
       return {
+        ...state,
         user: null,
+        token: null,
         loading: false,
         error: null,
       };
@@ -43,13 +60,24 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state.user));
-  }, [state.user]);
+    if (state.user) {
+      localStorage.setItem("user", JSON.stringify(state.user));
+    } else {
+      localStorage.removeItem("user");
+    }
+
+    if (state.token) {
+      localStorage.setItem("token", state.token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  }, [state.user, state.token]);
 
   return (
     <AuthContext.Provider
       value={{
         user: state.user,
+        token: state.token,
         loading: state.loading,
         error: state.error,
         dispatch,

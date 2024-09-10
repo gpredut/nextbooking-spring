@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -28,8 +30,8 @@ public class AuthenticationController {
 
     // Endpoint for user authentication and generating JWT
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginRequest loginRequest){
-        String token = authenticationService.authenticateUser(loginRequest);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserLoginRequest loginRequest) {
+        Map<String, Object> response = authenticationService.authenticateUser(loginRequest);
+        return ResponseEntity.ok(response);
     }
 }
