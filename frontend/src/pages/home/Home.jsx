@@ -1,10 +1,10 @@
-import Featured from "../../components/featured/Featured";
+import PropertyTypeList from "../../components/propertyTypeList/PropertyTypeList";
 import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import Newsletter from "../../components/newsletter/Newsletter";
 import Navbar from "../../components/navbar/Navbar";
-import PropertyList from "../../components/propertyList/PropertyList";
+import CityList from "../../components/cityList/CityList";
 import "./home.css";
 
 const Home = () => {
@@ -14,9 +14,9 @@ const Home = () => {
       <Header />
       <div className="homeContainer">
         <h1 className="homeTitle">Explore Romania</h1>
-        <Featured />
+        <CityList />
         <h1 className="homeTitle">Browse by property type</h1>
-        <PropertyList />
+        <PropertyTypeList />
         <h1 className="homeTitle">Homes guests love</h1>
         <FeaturedProperties />
         <Newsletter />

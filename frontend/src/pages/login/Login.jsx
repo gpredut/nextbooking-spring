@@ -27,7 +27,6 @@ const Login = () => {
         credentials
       );
 
-      // Verifică structura răspunsului
       console.log("Login response:", res.data);
 
       dispatch({
@@ -39,7 +38,7 @@ const Login = () => {
       });
       navigate("/");
     } catch (err) {
-      console.error("Login error:", err.response.data); // Adaugă loguri pentru erori
+      console.error("Login error:", err.response.data);
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };

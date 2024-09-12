@@ -27,11 +27,10 @@ const AuthReducer = (state, action) => {
         error: null,
       };
     case "LOGIN_SUCCESS":
-      console.log("LOGIN_SUCCESS payload:", action.payload); // Adaugă log aici
       return {
         ...state,
-        user: action.payload.user, // Salvăm user-ul din payload
-        token: action.payload.token, // Salvăm token-ul JWT
+        user: action.payload.user,
+        token: action.payload.token,
         loading: false,
         error: null,
       };

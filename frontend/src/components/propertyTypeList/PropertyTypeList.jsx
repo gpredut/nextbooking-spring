@@ -1,9 +1,9 @@
 import useFetch from "../hooks/useFetch.js";
-import "./propertyList.css";
+import "./propertyTypeList.css";
 
-const PropertyList = () => {
+const PropertyTypeList = () => {
   const { data, loading } = useFetch(
-    "http://localhost:8080/api/hotels/countByType"
+    "http://localhost:8800/api/hotels/countByType"
   );
 
   const images = [
@@ -36,4 +36,4 @@ const PropertyList = () => {
     </div>
   );
 };
-export default PropertyList;
+export default PropertyTypeList;

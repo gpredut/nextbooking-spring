@@ -2,6 +2,7 @@ import "./navbar.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import DropdownMenu from "../dropdownMenu/DropdownMenu";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -13,7 +14,7 @@ const Navbar = () => {
           <span className="logo">NextBooking.com</span>
         </Link>
         {user ? (
-          <span>{user.username}</span> // Display the username if logged in
+          <DropdownMenu />
         ) : (
           <div className="navItems">
             <Link to="/register" style={{ textDecoration: "none" }}>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import "./searchItem.css";
+import "./searchedItem.css";
 
-const SearchItem = ({ item }) => {
+const SearchedItem = ({ item }) => {
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
@@ -34,4 +34,4 @@ const SearchItem = ({ item }) => {
   );
 };
 
-export default SearchItem;
+export default SearchedItem;
