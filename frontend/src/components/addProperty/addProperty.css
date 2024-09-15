@@ -1,0 +1,95 @@
+/* addProperty.css */
+
+.list-property-form {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.list-property-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.list-property-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-property-form input,
+.list-property-form select,
+.list-property-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.list-property-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.list-property-form input[type="number"]::-webkit-inner-spin-button,
+.list-property-form input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.list-property-form input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.list-property-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.list-property-form button:hover {
+  background-color: #0056b3;
+}
+
+.list-property-form button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.list-property-form .error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.list-property-form .photo-item,
+.list-property-form .room-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.list-property-form .photo-item input,
+.list-property-form .room-item input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.list-property-form .photo-item button,
+.list-property-form .room-item button {
+  background-color: #dc3545;
+}
+
+.list-property-form .photo-item button:hover,
+.list-property-form .room-item button:hover {
+  background-color: #c82333;
+}

@@ -1,28 +1,32 @@
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext"; // Correct import of AuthContext
 import { useNavigate } from "react-router-dom";
 import "./dropdownMenu.css";
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext); // Use AuthContext
   const navigate = useNavigate();
 
+  // Toggle dropdown menu visibility
   const toggleDropdown = () => setIsOpen(!isOpen);
 
+  // Handle user logout
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/"); // Redirect to home page after logout
+    navigate("/");
   };
 
-  // Hide the menu when clicking outside of it
+  // Close dropdown if clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isOpen && !event.target.closest(".dropdown")) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -35,16 +39,27 @@ const DropdownMenu = () => {
       </button>
       {isOpen && (
         <div className="dropdown-menu">
-          <button onClick={() => navigate("/manage-account")}>
+          <button
+            className="dropdown-button"
+            onClick={() => navigate("/manage-account")}
+          >
             Manage Account
           </button>
-          <button onClick={() => navigate("/bookings-trips")}>
+          <button
+            className="dropdown-button"
+            onClick={() => navigate("/bookings-trips")}
+          >
             Booking & Trips
           </button>
-          <button onClick={() => navigate("/list-property")}>
+          <button
+            className="dropdown-button"
+            onClick={() => navigate("/add-property")}
+          >
             List your property
           </button>
-          <button onClick={handleLogout}>Sign Out</button>
+          <button className="dropdown-button" onClick={handleLogout}>
+            Sign Out
+          </button>
         </div>
       )}
     </div>

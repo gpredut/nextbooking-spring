@@ -4,61 +4,61 @@
   align-items: center;
   height: 100vh;
   background-color: #f4f4f4;
+}
 
-  .register-container {
-    width: 100%;
-    max-width: 400px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
+.register-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-  .register-heading {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #370d00;
-  }
+.register-heading {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #370d00;
+}
 
-  .register-form {
-    display: flex;
-    flex-direction: column;
-  }
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
 
-  .register-form div {
-    margin-bottom: 15px;
-    text-align: left;
-  }
+.register-form div {
+  margin-bottom: 15px;
+  text-align: left;
+}
 
-  .register-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
+.register-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
 
-  .register-form input,
-  .register-form select {
-    width: 100%;
-    padding: 10px;
-    margin: 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+.register-form input,
+.register-form select {
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 
-  .register-form button {
-    background-color: #370d00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
+.register-form button {
+  background-color: #370d00;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
 
-  .register-form button:hover {
-    background-color: #bd8e62;
-  }
+.register-form button:hover {
+  background-color: #bd8e62;
 }

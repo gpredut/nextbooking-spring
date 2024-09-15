@@ -10,7 +10,6 @@ import "./home.css";
 const Home = () => {
   return (
     <div>
-      <Navbar />
       <Header />
       <div className="homeContainer">
         <h1 className="homeTitle">Explore Romania</h1>

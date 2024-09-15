@@ -33,6 +33,7 @@ public class AuthenticationService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
+        // Set role to GUEST if not provided
         user.setRole(registerRequest.getRole() != null ? registerRequest.getRole() : User.Role.GUEST);
 
         return userRepository.save(user);
@@ -48,7 +49,11 @@ public class AuthenticationService {
             throw new IllegalStateException("Invalid credentials for user: " + username);
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        // Get user role
+        String role = user.getRole().name();
+
+        // Generate token with role
+        String token = jwtUtil.generateToken(user.getUsername(), role);
 
         Map<String, Object> response = new HashMap<>();
         response.put("user", user);

@@ -1,8 +1,8 @@
-import "./navbar.css";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import DropdownMenu from "../dropdownMenu/DropdownMenu";
+import { Link } from "react-router-dom";
+import "./navbar.css";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -13,6 +13,7 @@ const Navbar = () => {
         <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
           <span className="logo">NextBooking.com</span>
         </Link>
+
         {user ? (
           <DropdownMenu />
         ) : (

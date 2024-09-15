@@ -1,4 +1,6 @@
-import { createContext, useEffect, useReducer } from "react";
+// AuthContext.js
+
+import React, { createContext, useReducer, useEffect } from "react";
 
 const INITIAL_STATE = {
   user: (() => {

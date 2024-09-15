@@ -1,8 +1,10 @@
+/* Dropdown container */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* Button that toggles the dropdown menu */
 .dropdown-toggle {
   background-color: #f8f9fa;
   color: #343a40;
@@ -12,10 +14,12 @@
   cursor: pointer;
 }
 
+/* Button hover state */
 .dropdown-toggle:hover {
   background-color: #e2e6ea;
 }
 
+/* Dropdown menu */
 .dropdown-menu {
   display: flex;
   flex-direction: column;
@@ -29,6 +33,7 @@
   z-index: 1;
 }
 
+/* Buttons inside the dropdown menu */
 .dropdown-menu button {
   background: none;
   border: none;
@@ -36,12 +41,15 @@
   text-align: left;
   cursor: pointer;
   width: 100%;
+  color: #343a40;
 }
 
+/* Button hover state inside the dropdown menu */
 .dropdown-menu button:hover {
   background-color: #f1f1f1;
 }
 
+/* Border between buttons in dropdown menu */
 .dropdown-menu button:not(:last-child) {
   border-bottom: 1px solid #dee2e6;
 }

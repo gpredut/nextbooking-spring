@@ -1,5 +1,7 @@
 package com.nextbooking.server.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +33,7 @@ public class Property {
     private String address;
 
     @Column(nullable = false)
-    private String distance;  //distance from the city center
+    private Double distance;  // distance from the city center
 
     @ElementCollection
     @CollectionTable(name = "property_photos", joinColumns = @JoinColumn(name = "property_id"))
@@ -39,10 +41,10 @@ public class Property {
     private List<String> photos;
 
     @Column(length = 2000)
-    private String desc;
+    private String description;
 
     @Column(nullable = false)
-    private Double cheapestPrice;
+    private Integer cheapestPrice;
 
     @Column(nullable = false)
     private boolean featured;
@@ -50,11 +52,11 @@ public class Property {
     @ElementCollection
     @CollectionTable(name = "property_rooms", joinColumns = @JoinColumn(name = "property_id"))
     @Column(name = "room_details")
-    private List<String> rooms;
+    private List<Integer> rooms;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonBackReference  // Prevents serialization of the owner field to avoid cyclic references
     private User owner;
 
 }
-

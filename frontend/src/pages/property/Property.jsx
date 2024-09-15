@@ -14,7 +14,7 @@ import { useState, useContext } from "react";
 import useFetch from "../../components/hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext"; // Import named
 import Reserve from "../../components/reserve/Reserve";
 
 const Property = () => {
@@ -25,7 +25,7 @@ const Property = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const { data, loading } = useFetch(`/hotels/find/${id}`);
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext); // Import named
   const navigate = useNavigate();
 
   const { dates, options } = useContext(SearchContext);
@@ -36,6 +36,7 @@ const Property = () => {
     const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
     return diffDays;
   }
+
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
   const handleOpen = (i) => {
@@ -45,13 +46,11 @@ const Property = () => {
 
   const handleMove = (direction) => {
     let newSlideNumber;
-
     if (direction === "l") {
       newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
     } else {
       newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
     }
-
     setSlideNumber(newSlideNumber);
   };
 
@@ -68,9 +67,9 @@ const Property = () => {
       <Navbar />
       <Header type="list" />
       {loading ? (
-        "loading"
+        "Loading"
       ) : (
-        <div className="hotelContainer">
+        <div className="propertyContainer">
           {open && (
             <div className="slider">
               <FontAwesomeIcon
@@ -97,49 +96,58 @@ const Property = () => {
               />
             </div>
           )}
-          <div className="hotelWrapper">
-            <h1 className="hotelTitle">{data.name}</h1>
-            <div className="hotelAddress">
+          <div className="propertyWrapper">
+            <button className="bookNow" onClick={handleClick}>
+              Reserve or Book Now!
+            </button>
+            <h1 className="propertyTitle">{data.name}</h1>
+            <div className="propertyAddress">
               <FontAwesomeIcon icon={faLocationDot} />
               <span>{data.address}</span>
             </div>
-            <span className="hotelDistance">
+            <span className="propertyDistance">
               Excellent location – {data.distance}m from center
             </span>
-            <span className="hotelPriceHighlight">
+            <span className="propertyPrice">
               Book a stay over ${data.cheapestPrice} at this property and get a
               free airport taxi
             </span>
-            <div className="hotelImages">
+            <div className="propertyImages">
               {data.photos?.map((photo, i) => (
-                <div className="hotelImgWrapper" key={i}>
+                <div className="propertyImgWrapper" key={i}>
                   <img
                     onClick={() => handleOpen(i)}
                     src={photo}
                     alt=""
-                    className="hotelImg"
+                    className="propertyImg"
                   />
                 </div>
               ))}
             </div>
-            <div className="hotelDetails">
-              <div className="hotelDetailsTexts">
-                <p className="hotelDesc">{data.desc}</p>
+            <div className="propertyDetails">
+              <div className="propertyDetailTexts">
+                <h1 className="propertyTitle">{data.title}</h1>
+                <p className="propertyDesc">{data.desc}</p>
               </div>
-              <div className="hotelDetailsPrice">
+              <div className="propertyDetailPrice">
                 <h1>Perfect for a {days}-night stay!</h1>
+                <span>
+                  Located in the real heart of the city, this property has an
+                  excellent location score of {data.rating}
+                </span>
                 <h2>
-                  ${days * data.cheapestPrice * options.room} ({days} nights)
+                  <b>${days * data.cheapestPrice * options.room}</b> ({days}{" "}
+                  nights)
                 </h2>
                 <button onClick={handleClick}>Reserve or Book Now!</button>
               </div>
             </div>
           </div>
+          {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
           <Newsletter />
           <Footer />
         </div>
       )}
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };

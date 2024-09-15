@@ -26,7 +26,7 @@
 }
 
 .lButton {
-  background-color: #370d00; /* Dark brown for normal state */
+  background-color: #370d00;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -37,5 +37,11 @@
 }
 
 .lButton:hover {
-  background-color: #bd8e62; /* Light brown for hover state */
+  background-color: #bd8e62;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  display: block;
 }

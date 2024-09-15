@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext"; // Import named
 import "./login.css";
 
 const Login = () => {
@@ -38,8 +38,13 @@ const Login = () => {
       });
       navigate("/");
     } catch (err) {
-      console.error("Login error:", err.response.data);
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+      console.error("Login error:", err.response?.data || err.message);
+      dispatch({
+        type: "LOGIN_FAILURE",
+        payload: {
+          message: err.response?.data?.message || err.message,
+        },
+      });
     }
   };
 
@@ -63,7 +68,7 @@ const Login = () => {
         <button disabled={loading} onClick={handleClick} className="lButton">
           Login
         </button>
-        {error && <span>{error.message}</span>}
+        {error && <span className="error-message">{error.message}</span>}
       </div>
     </div>
   );

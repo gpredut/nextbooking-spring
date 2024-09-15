@@ -27,9 +27,12 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String identifier) {
+    // Accept a single role as a String
+    public String generateToken(String identifier, String role) {
+        System.out.println("Generating token for user: " + identifier + " with role: " + role); // Debug log
         return Jwts.builder()
                 .setSubject(identifier)
+                .claim("role", role) // Store single role in token
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -43,6 +46,17 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        String role = (String) claims.get("role");
+        System.out.println("Role extracted from token: " + role); // Debug log
+        return role;
     }
 
     public boolean isTokenExpired(String token) {
