@@ -3,7 +3,7 @@ import "./cityList.css";
 
 const Featured = () => {
   const { data, loading } = useFetch(
-    "http://localhost:8800/api/hotels/countByCity?cities=bucharest,sinaia,hunedoara"
+    "http://localhost:8800/api/properties/countByCity?cities=bucharest,sinaia,hunedoara"
   );
 
   return (

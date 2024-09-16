@@ -110,6 +110,11 @@ public class PropertyController {
         }
     }
 
+    @GetMapping("/countByCity")
+    public List<Long> countByCity(@RequestParam List<String> cities) {
+        return propertyService.countPropertiesByCities(cities);
+    }
+
     private String getCurrentUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -58,5 +59,11 @@ public class PropertyService {
 
     public Optional<Property> getPropertiesByAddress(String address) {
         return propertyRepository.findByAddress(address);
+    }
+
+    public List<Long> countPropertiesByCities(List<String> cities) {
+        return cities.stream()
+                .map(city -> propertyRepository.countByCity(city))
+                .collect(Collectors.toList());
     }
 }

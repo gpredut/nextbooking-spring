@@ -45,13 +45,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless API
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll() // Allow access to auth endpoints
-                        .anyRequest().authenticated() // Require authentication for all other requests
+                        // Allow access to authentication endpoints
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        // Allow access to the city count endpoint without authentication
+                        .requestMatchers("/api/properties/countByCity").permitAll()
+                        // All other requests require authentication
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session management
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class) // Add JWT filter
+                // Add JWT authentication filter
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
