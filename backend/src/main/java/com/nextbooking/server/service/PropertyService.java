@@ -55,4 +55,8 @@ public class PropertyService {
         User user = userOpt.get();
         return property.getOwner().equals(user);
     }
+
+    public Optional<Property> getPropertiesByAddress(String address) {
+        return propertyRepository.findByAddress(address);
+    }
 }

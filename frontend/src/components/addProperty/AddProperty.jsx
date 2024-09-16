@@ -16,6 +16,7 @@ const AddProperty = ({ onPropertyAdded }) => {
   const [rooms, setRooms] = useState([]);
   const [photoInput, setPhotoInput] = useState("");
   const [roomInput, setRoomInput] = useState("");
+  const [error, setError] = useState(""); // For error messages
 
   // Fallback for onPropertyAdded if it's not a function
   const handlePropertyAdded =
@@ -48,7 +49,7 @@ const AddProperty = ({ onPropertyAdded }) => {
       description,
       cheapestPrice: parseInt(cheapestPrice),
       featured,
-      rooms: rooms.map(Number),
+      rooms,
     };
 
     console.log("Submitting property:", newProperty);
@@ -67,6 +68,8 @@ const AddProperty = ({ onPropertyAdded }) => {
       if (response.ok) {
         handlePropertyAdded(); // Call the function to update parent component
         alert("Property added successfully!");
+      } else if (response.status === 409) {
+        setError("Property with the same address already exists.");
       } else {
         console.error(
           "Failed to add property:",
@@ -77,6 +80,7 @@ const AddProperty = ({ onPropertyAdded }) => {
       }
     } catch (error) {
       console.error("Error:", error);
+      setError("An error occurred while adding the property.");
     }
   };
 
@@ -199,6 +203,7 @@ const AddProperty = ({ onPropertyAdded }) => {
               </div>
             </div>
             <button type="submit">Add Property</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
         </>
       ) : (

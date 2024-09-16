@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +52,7 @@ public class PropertyController {
     @PostMapping("/add")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> addProperty(@RequestBody Property property, @AuthenticationPrincipal UserDetails userDetails) {
+        // Fetch the owner from the username of the currently authenticated user
         Optional<User> ownerOpt = userService.getUserByUsername(userDetails.getUsername());
         if (ownerOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -64,6 +64,14 @@ public class PropertyController {
         property.setOwner(owner);
 
         try {
+            // Check if a property with the same address already exists
+            Optional<Property> existingProperty = propertyService.getPropertiesByAddress(property.getAddress());
+            if (existingProperty.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("Property with the same address already exists");
+            }
+
             Property newProperty = propertyService.addProperty(property);
             if (newProperty == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,6 +93,7 @@ public class PropertyController {
     @PreAuthorize("hasRole('ADMIN') or (hasRole('OWNER') and @propertyService.isOwnerOfProperty(#id, authentication.name))")
     public ResponseEntity<?> deleteProperty(@PathVariable Long id) {
         try {
+            // Check if the user has permission to delete the property
             if (!propertyService.isOwnerOfProperty(id, getCurrentUsername()) && !hasAdminRole()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .contentType(MediaType.APPLICATION_JSON)
