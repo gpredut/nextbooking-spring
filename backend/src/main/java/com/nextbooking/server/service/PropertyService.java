@@ -66,4 +66,9 @@ public class PropertyService {
                 .map(city -> propertyRepository.countByCity(city))
                 .collect(Collectors.toList());
     }
+
+    public List<Property> getFeaturedProperties(int limit) {
+        return propertyRepository.findFeaturedProperties(limit);
+    }
+
 }

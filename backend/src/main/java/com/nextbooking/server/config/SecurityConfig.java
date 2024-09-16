@@ -45,10 +45,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless API
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .authorizeHttpRequests(auth -> auth
-                        // Allow access to authentication endpoints
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                        // Allow access to the city count endpoint without authentication
-                        .requestMatchers("/api/properties/countByCity").permitAll()
+                        // Allow access to these endpoints without authentication
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/properties/countByCity", "/api/properties/featured").permitAll()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )

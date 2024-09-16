@@ -115,6 +115,18 @@ public class PropertyController {
         return propertyService.countPropertiesByCities(cities);
     }
 
+    @GetMapping("/featured")
+    public ResponseEntity<List<Property>> getFeaturedProperties(
+            @RequestParam(defaultValue = "10") int limit) {
+        List<Property> properties = propertyService.getFeaturedProperties(limit);
+        if (properties.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(properties);
+    }
+
     private String getCurrentUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
