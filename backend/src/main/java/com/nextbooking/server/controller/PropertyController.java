@@ -117,7 +117,7 @@ public class PropertyController {
 
     @GetMapping("/featured")
     public ResponseEntity<List<Property>> getFeaturedProperties(
-            @RequestParam(defaultValue = "10") int limit) {
+            @RequestParam(defaultValue = "4") int limit) {  // Default limit is 4
         List<Property> properties = propertyService.getFeaturedProperties(limit);
         if (properties.isEmpty()) {
             return ResponseEntity.noContent().build();

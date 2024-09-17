@@ -3,7 +3,7 @@ import "./featuredProperties.css";
 
 const FeaturedProperties = () => {
   const { data, loading } = useFetch(
-    "http://localhost:8800/api/properties/featured?limit=4"
+    "http://localhost:8800/api/properties/featured"
   );
 
   return (
