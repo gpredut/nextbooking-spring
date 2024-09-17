@@ -3,7 +3,7 @@ import "./propertyTypeList.css";
 
 const PropertyTypeList = () => {
   const { data, loading } = useFetch(
-    "http://localhost:8800/api/hotels/countByType"
+    "http://localhost:8800/api/properties/countByType"
   );
 
   const images = [
@@ -13,27 +13,34 @@ const PropertyTypeList = () => {
     "https://i.im.ge/2024/02/14/cWpP6L.photo-1564013799919-ab600027ffc6q80w2070autoformatfitcropixlibrb-4-0.jpg",
     "https://i.im.ge/2024/02/14/cWp8SF.photo-1510798831971-661eb04b3739q80w1974autoformatfitcropixlibrb-4-0.jpg",
   ];
+
+  const types = ["Hotel", "Apartment", "Guest House", "Villa", "Cabin"];
+
   return (
     <div className="pList">
       {loading ? (
         "loading"
       ) : (
         <>
-          {data &&
-            images.map((img, i) => (
+          {images.map((img, i) => {
+            const normalizedType = types[i].toLowerCase();
+            const typeData = data?.find((d) => d.type === normalizedType);
+
+            return (
               <div className="pListItem" key={i}>
-                <img src={img} alt="" className="pListImg" />
+                <img src={img} alt={types[i]} className="pListImg" />
                 <div className="pListTitles">
-                  <h1>{data[i]?.type}</h1>
-                  <h2>
-                    {data[i]?.count} {data[i]?.type}
-                  </h2>
+                  <h1>
+                    {typeData ? typeData.count : 0} {types[i]}
+                  </h1>
                 </div>
               </div>
-            ))}
+            );
+          })}
         </>
       )}
     </div>
   );
 };
+
 export default PropertyTypeList;

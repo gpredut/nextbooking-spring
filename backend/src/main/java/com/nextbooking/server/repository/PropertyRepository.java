@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PropertyRepository extends JpaRepository<Property, Long> {
@@ -24,4 +25,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     // Custom query for featured properties with pagination
     @Query("SELECT p FROM Property p WHERE p.featured = true")
     List<Property> findFeaturedProperties(Pageable pageable);
+
+    // Find properties by city, minPrice and maxPrice
+    List<Property> findByCityAndCheapestPriceBetween(String city, Integer minPrice, Integer maxPrice);
 }

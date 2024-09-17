@@ -1,7 +1,8 @@
 .footer {
   width: 100%;
-  width: 1024px;
+  max-width: 1024px;
   font-size: 12px;
+  margin: 50px auto 0;
 }
 
 .fLists {
@@ -9,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+  text-align: left;
 }
 
 .fList {

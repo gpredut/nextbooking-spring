@@ -9,21 +9,25 @@ import AddProperty from "./components/addProperty/AddProperty";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SearchContextProvider } from "./context/SearchContext";
 import Navbar from "./components/navbar/Navbar";
+import Newsletter from "./components/newsletter/Newsletter";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
     <AuthContextProvider>
       <SearchContextProvider>
         <BrowserRouter>
-          <Navbar />{" "}
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/properties" element={<List />} />
-            <Route path="/properties/:id" element={<Property />} />
+            <Route path="/search" element={<List />} />
+            <Route path="/:id" element={<Property />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/add-property" element={<AddProperty />} />
           </Routes>
+          <Newsletter />
+          <Footer />
         </BrowserRouter>
       </SearchContextProvider>
     </AuthContextProvider>

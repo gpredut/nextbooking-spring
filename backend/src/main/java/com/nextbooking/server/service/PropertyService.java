@@ -73,4 +73,12 @@ public class PropertyService {
         Pageable pageable = PageRequest.of(0, limit);
         return propertyRepository.findFeaturedProperties(pageable);
     }
+
+    public List<Property> findProperties(String city, Integer minPrice, Integer maxPrice) {
+        return propertyRepository.findByCityAndCheapestPriceBetween(city, minPrice, maxPrice);
+    }
+
+    public Optional<Property> getPropertyById(Long id) {
+        return propertyRepository.findById(id);
+    }
 }

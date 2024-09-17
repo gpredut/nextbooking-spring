@@ -18,7 +18,7 @@ const List = () => {
   const [max, setMax] = useState(999);
 
   const { data, loading, reFetch } = useFetch(
-    `/hotels?city=${destination}&min=${min}&max=${max}`
+    `http://localhost:8800/api/properties/search?city=${destination}&min=${min}&max=${max}`
   );
 
   const handleClick = () => {
@@ -27,7 +27,6 @@ const List = () => {
 
   return (
     <div>
-      <Navbar />
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">
@@ -110,7 +109,7 @@ const List = () => {
             ) : (
               <>
                 {data.map((item) => (
-                  <SearchedItem item={item} key={item._id} />
+                  <SearchedItem item={item} key={item.id} />
                 ))}
               </>
             )}

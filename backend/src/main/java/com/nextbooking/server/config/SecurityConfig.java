@@ -46,7 +46,14 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
                 .authorizeHttpRequests(auth -> auth
                         // Allow access to these endpoints without authentication
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/properties/countByCity", "/api/properties/featured").permitAll()
+                        .requestMatchers(
+                                "/api/auth/register",
+                                "/api/auth/login",
+                                "/api/properties/countByCity",
+                                "/api/properties/featured",
+                                "/api/properties/countByType",
+                                "/api/properties/search"
+                        ).permitAll()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )

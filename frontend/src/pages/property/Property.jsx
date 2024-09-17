@@ -14,7 +14,7 @@ import { useState, useContext } from "react";
 import useFetch from "../../components/hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
-import { AuthContext } from "../../context/AuthContext"; // Import named
+import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
 
 const Property = () => {
@@ -25,7 +25,7 @@ const Property = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const { data, loading } = useFetch(`/hotels/find/${id}`);
-  const { user } = useContext(AuthContext); // Import named
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { dates, options } = useContext(SearchContext);
@@ -64,7 +64,6 @@ const Property = () => {
 
   return (
     <div>
-      <Navbar />
       <Header type="list" />
       {loading ? (
         "Loading"
@@ -126,8 +125,8 @@ const Property = () => {
             </div>
             <div className="propertyDetails">
               <div className="propertyDetailTexts">
-                <h1 className="propertyTitle">{data.title}</h1>
-                <p className="propertyDesc">{data.desc}</p>
+                <h1 className="propertyTitle">{data.name}</h1>
+                <p className="propertyDesc">{data.description}</p>
               </div>
               <div className="propertyDetailPrice">
                 <h1>Perfect for a {days}-night stay!</h1>
@@ -144,8 +143,6 @@ const Property = () => {
             </div>
           </div>
           {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
-          <Newsletter />
-          <Footer />
         </div>
       )}
     </div>

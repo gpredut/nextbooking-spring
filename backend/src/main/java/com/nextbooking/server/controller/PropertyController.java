@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,7 +32,7 @@ public class PropertyController {
     @GetMapping
     public ResponseEntity<List<Property>> getAllProperties() {
         List<Property> properties = propertyService.getAllProperties();
-        if (properties == null || properties.isEmpty()) {
+        if (properties.isEmpty()) {
             return ResponseEntity.noContent().build(); // Returns 204 No Content if no properties are found
         }
         return ResponseEntity.ok()
@@ -41,7 +43,7 @@ public class PropertyController {
     @GetMapping("/city/{city}")
     public ResponseEntity<List<Property>> getPropertiesByCity(@PathVariable String city) {
         List<Property> properties = propertyService.getPropertiesByCity(city);
-        if (properties == null || properties.isEmpty()) {
+        if (properties.isEmpty()) {
             return ResponseEntity.noContent().build(); // Returns 204 No Content if no properties are found
         }
         return ResponseEntity.ok()
@@ -111,13 +113,13 @@ public class PropertyController {
     }
 
     @GetMapping("/countByCity")
-    public List<Long> countByCity(@RequestParam List<String> cities) {
-        return propertyService.countPropertiesByCities(cities);
+    public ResponseEntity<List<Long>> countByCity(@RequestParam List<String> cities) {
+        List<Long> counts = propertyService.countPropertiesByCities(cities);
+        return ResponseEntity.ok(counts);
     }
 
     @GetMapping("/featured")
-    public ResponseEntity<List<Property>> getFeaturedProperties(
-            @RequestParam(defaultValue = "4") int limit) {  // Default limit is 4
+    public ResponseEntity<List<Property>> getFeaturedProperties(@RequestParam(defaultValue = "4") int limit) {
         List<Property> properties = propertyService.getFeaturedProperties(limit);
         if (properties.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -125,6 +127,28 @@ public class PropertyController {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(properties);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Property>> getProperties(
+            @RequestParam String city,
+            @RequestParam(defaultValue = "0") Integer min,
+            @RequestParam(defaultValue = "999") Integer max) {
+        List<Property> properties = propertyService.findProperties(city, min, max);
+        return ResponseEntity.ok(properties);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Property> getPropertyById(@PathVariable Long id) {
+        Optional<Property> property = propertyService.getPropertyById(id);
+        if (property.isPresent()) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(property.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
     }
 
     private String getCurrentUsername() {

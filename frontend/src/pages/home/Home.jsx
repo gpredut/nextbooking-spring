@@ -1,11 +1,8 @@
 import PropertyTypeList from "../../components/propertyTypeList/PropertyTypeList";
 import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
-import Footer from "../../components/footer/Footer";
-import Header from "../../components/header/Header";
-import Newsletter from "../../components/newsletter/Newsletter";
-import Navbar from "../../components/navbar/Navbar";
 import CityList from "../../components/cityList/CityList";
 import "./home.css";
+import Header from "../../components/header/Header";
 
 const Home = () => {
   return (
@@ -18,8 +15,6 @@ const Home = () => {
         <PropertyTypeList />
         <h1 className="homeTitle">Homes guests love</h1>
         <FeaturedProperties />
-        <Newsletter />
-        <Footer />
       </div>
     </div>
   );
